@@ -1,8 +1,11 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using TodoList.Context;
+using TodoList.DTO;
 using TodoList.Models;
+using TodoList.Repository;
 
 namespace TodoList.Controllers
 {
@@ -10,58 +13,77 @@ namespace TodoList.Controllers
     [Route("api/v1/[controller]")]
     public class TodoItemController : Controller
     {
-        private readonly AppDbContext _context;
+        ISearcher<TodoItem> _itemSearcher;
+        ISearcher<TodoFolder> _folderSearcher;
 
-        public TodoItemController(AppDbContext context) => _context = context;
-
-        [HttpGet]
-        public async Task<ActionResult> ListAsync()
+        public TodoItemController(ISearcher<TodoItem> itemSearcher, ISearcher<TodoFolder> folderSearcher)
         {
-            return Ok(await _context.todoItems.ToListAsync());
+            _folderSearcher = folderSearcher;
+            _itemSearcher = itemSearcher;
+
+        }
+
+        [HttpGet("{idFolder}")]
+        public async Task<ActionResult> ListAsync(int idFolder)
+        {
+            var result = await _itemSearcher.ListBy(s => s.Folder.Id == idFolder);
+            return Ok(result);
         }
 
         [HttpPost]
-        public async Task<ActionResult> CreateAsync(TodoItem item)
+        public async Task<ActionResult> CreateAsync(TodoItemDTO itemDTO)
         {
-            if (item.Description != "" && item.Description != null)
+            try
             {
-                _context.Add(item);
-                await _context.SaveChangesAsync();
-                return Ok(await _context.todoItems.ToListAsync());
+                TodoItem newItem = new TodoItem();
+                newItem.Description = itemDTO.Description;
+                newItem.Folder = await _folderSearcher.GetBy(itemDTO.Folder.Id);
+                
+
+                return Ok(await _itemSearcher.Insert(newItem));
             } 
-            else
+            catch
             {
-                return BadRequest();
+                return BadRequest("Description cannot be empty");
             }
 
         }
 
-        [HttpPatch("{id}")]
-        public async Task<ActionResult> PatchAsync(int id, TodoItem item)
+        [HttpPatch("item/{id}")]
+        public async Task<ActionResult> PatchAsync(int id, TodoItemDTO itemDTO)
         {
-            var entity = await _context.todoItems.FirstOrDefaultAsync(item => item.Id == id);
+            var entity = await _itemSearcher.GetBy(id);
 
-            if (entity != null)
+            try
             {
-                entity.Description = item.Description;
-                entity.Completed = item.Completed;
-                await _context.SaveChangesAsync();
-                return Ok(await _context.todoItems.ToListAsync());
+                entity.Description = itemDTO.Description;
+                entity.Completed = itemDTO.Completed;
+
+                await _itemSearcher.Update(id, entity);
+
+                return Ok();
             }
-            else
+            catch (System.Exception)
             {
-                return BadRequest();
+
+                return BadRequest("Can't change non existing Item");
             }
 
         }
 
-        [HttpDelete("{id}")]
+        [HttpDelete("item/{id}")]
         public async Task<ActionResult> DeleteAsync(int id)
         {
-            var entity = await _context.todoItems.FindAsync(id);
-            _context.todoItems.Remove(entity);
-            await _context.SaveChangesAsync();
-            return Ok(await _context.todoItems.ToListAsync());
+            try
+            {
+                await _itemSearcher.Remove(id);
+                return Ok(true);
+            }
+            catch (System.Exception)
+            {
+                return BadRequest("Can't delete non existing item");
+            }
+
         }
     }
 }

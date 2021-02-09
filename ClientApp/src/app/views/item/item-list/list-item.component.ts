@@ -1,6 +1,8 @@
+import { ActivatedRoute, Router } from '@angular/router';
+
 import { Component } from '@angular/core';
-import { HomeService } from 'src/app/services/home.service';
 import { ItemFormComponent } from '../item-form/form-item.component';
+import { ItemService } from 'src/app/services/item.service';
 import { MatDialog } from '@angular/material';
 import { todoItem } from 'src/app/models/todoItem';
 
@@ -12,60 +14,61 @@ import { todoItem } from 'src/app/models/todoItem';
 export class ItemListComponent {
   items : todoItem[];
   itemDesc = "";
+  idFolder = 0;
   isCompleted : boolean = false;
   
-  constructor( private basicService : HomeService, public dialog : MatDialog ){
-    this.listItems();
+  constructor(private basicService : ItemService, public dialog : MatDialog, private route : ActivatedRoute){
+    route.params.subscribe(params => {
+      this.idFolder = params.id;
+      this.listItems(params.id);
+    })
   }
 
-  listItems(){
-    this.basicService.list().subscribe(result => {
-      this.items = result
+  listItems(id : number){
+    this.basicService.list(id).then( result => {
+      this.items = result.data;
     })
   }
 
   createItem(){
     if (this.itemDesc != ""){
-      this.basicService.create(this.itemDesc).subscribe( result => {
-        this.items = result;
+      this.basicService.create(this.itemDesc, this.idFolder).then(() => {
+        this.listItems(this.idFolder)
         this.itemDesc = "";
       })
     }
   }
 
   deleteItem(item : todoItem){
-    this.basicService.delete(item.id).subscribe( result => {
-      this.items = result;
-    })
+    this.basicService.delete(item.id).then(() => {
+      this.listItems(this.idFolder)
+    });
   }
 
   editItem(item : todoItem){
-    this.basicService.patch(item).subscribe( result => {
-      this.items = result;
-    })
+    this.basicService.patch(item).then(() => {
+      this.listItems(this.idFolder);
+    });
   }
 
   onCompletedChange(item : todoItem, completed : boolean){
     item.completed = completed;
-    this.basicService.patch(item).subscribe( result => {
-      this.items = result;
-    })
+    this.editItem(item);
   }
 
   openDialog(item: todoItem){
     const dialogRef = this.dialog.open(ItemFormComponent, {
-      width: '250px',
+      width: '300px',
       data: {description: item.description}
     });
 
-    dialogRef.afterClosed().subscribe(result => {
+    dialogRef.afterClosed().subscribe( result => {
 
       try {
         item.description = result.description;
         this.editItem(item);
 
       } catch (error) {
-        console.log(error)
       }
     });
   }

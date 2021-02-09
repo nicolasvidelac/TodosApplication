@@ -1,20 +1,29 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
 using System.Threading.Tasks;
+using TodoList.Context;
 using TodoList.Models;
+using TodoList.Repository;
 
 namespace TodoList.Controllers
 {
+    [ApiController]
+    [Route("api/v1/[controller]")]
+
     public class TodoFolderController : Controller
     {
-        private readonly AppDbContext _context;
+        ISearcher<TodoFolder> _folderSearcher;
+        ISearcher<TodoItem> _itemSearcher;
 
-        public TodoFolderController(AppDbContext context) => _context = context;
+        public TodoFolderController(ISearcher<TodoFolder> folderSearcher, ISearcher<TodoItem> itemSearcher)
+        {
+            _folderSearcher = folderSearcher;
+            _itemSearcher = itemSearcher;
+        }
 
         [HttpGet]
         public async Task<ActionResult> ListAsync()
         {
-            return Ok(await _context.todoFolders.ToListAsync());
+            return Ok(await _folderSearcher.ListBy(null));
         }
 
         [HttpPost]
@@ -22,31 +31,11 @@ namespace TodoList.Controllers
         {
             if (item.Description != "" && item.Description != null)
             {
-                _context.Add(item);
-                await _context.SaveChangesAsync();
-                return Ok(await _context.todoFolders.ToListAsync());
+                return Ok(await _folderSearcher.Insert(item));
             }
             else
             {
-                return BadRequest();
-            }
-
-        }
-
-        [HttpPatch("{id}")]
-        public async Task<ActionResult> PatchAsync(int id, TodoFolder item)
-        {
-            var entity = await _context.todoFolders.FirstOrDefaultAsync(item => item.Id == id);
-
-            if (entity != null)
-            {
-                entity.Description = item.Description;
-                await _context.SaveChangesAsync();
-                return Ok(await _context.todoFolders.ToListAsync());
-            }
-            else
-            {
-                return BadRequest();
+                return BadRequest("Description cannot be empty");
             }
 
         }
@@ -54,10 +43,23 @@ namespace TodoList.Controllers
         [HttpDelete("{id}")]
         public async Task<ActionResult> DeleteAsync(int id)
         {
-            var entity = await _context.todoFolders.FindAsync(id);
-            _context.todoFolders.Remove(entity);
-            await _context.SaveChangesAsync();
-            return Ok(await _context.todoFolders.ToListAsync());
+            try
+            {
+                var folderItems = await _itemSearcher.ListBy(s => s.Folder.Id == id);
+
+                foreach (var item in folderItems)
+                {
+                    await _itemSearcher.Remove(item.Id);
+                }
+
+                await _folderSearcher.Remove(id);
+                return Ok(true);
+            }
+            catch (System.Exception)
+            {
+                return BadRequest("Can't delete non existing Folder");
+            }
         }
     }
+
 }

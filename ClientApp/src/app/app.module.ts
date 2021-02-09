@@ -3,6 +3,8 @@ import { MatCardModule, MatCheckboxModule, MatDialogModule, MatFormFieldModule }
 import { AppComponent } from './app.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { BrowserModule } from '@angular/platform-browser';
+import { FolderFormComponent } from "./views/folder/folder-form/form-folder.component";
+import { FolderListComponent } from "./views/folder/folder-list/list-folder.component";
 import { FormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
 import { ItemFormComponent } from './views/item/item-form/form-item.component';
@@ -15,7 +17,9 @@ import { RouterModule } from '@angular/router';
   declarations: [
     AppComponent,
     ItemListComponent,
-    ItemFormComponent
+    ItemFormComponent,
+    FolderFormComponent,
+    FolderListComponent
   ],
   imports: [
     BrowserModule.withServerTransition({ appId: 'ng-cli-universal' }),
@@ -28,12 +32,15 @@ import { RouterModule } from '@angular/router';
     MatCardModule,
     FormsModule,
     RouterModule.forRoot([
-      { path: '', component: ItemListComponent, pathMatch: 'full' },
+      { path: '', component: FolderListComponent, pathMatch: 'full' },
+      { path: 'items/:id', component: ItemListComponent },
+      
     ]),
     BrowserAnimationsModule
   ],
   entryComponents: [
-    ItemFormComponent
+    ItemFormComponent,
+    FolderFormComponent
   ],
   providers: [],
   bootstrap: [AppComponent]

@@ -1,0 +1,27 @@
+<div class="home">
+  <h1>Folder's List</h1>
+  <div class="addfolder">
+    <input [(ngModel)]="folderDesc" type="text" placeholder="Add folder" class="addText">
+    <button (click)="createfolder()"  class="btn btn-sm btn-success ml-1"><i class="material-icons">add</i></button>
+  </div>
+  <ul>
+    <table class="table">
+      <tbody>
+        <tr *ngFor="let folder of folders">
+            <td>
+              <mat-nav-list>
+                <mat-list-item (click)="openItems(folder.id)" >
+                  {{folder.description}}
+                </mat-list-item>
+              </mat-nav-list>
+            </td>
+            <td>
+              <div style="margin-top: 10px;">
+                <button  class="btn btn-sm btn-danger"  (click)="deletefolder(folder)"><i class="material-icons">delete</i></button>
+              </div>
+            </td>
+        </tr>
+      </tbody>
+    </table>
+  </ul>
+</div>
