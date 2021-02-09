@@ -1,7 +1,7 @@
 # Todo's Application
 
 ## About:
-This is a simple "To do" notes app, with folder to group those, and if i made it, user login.
+This is a simple "To do" notes app, with folder to group those, and, hopefully, user login.
 This exist because it was requested for a job interview.
 
 ### Languages and Tools:
@@ -37,3 +37,5 @@ If when you run the app when running the program in linux or docker, you receive
 ##### "The author primary signature's timestamp found a chain building issue: UntrustedRoot"
  
  This is because Microsoft's "NuGet" Framework certificate has expired at the end of Januray 2021 and it has not been renewed yet. There are several workarounds on the internet (see: https://github.com/NuGet/Announcements/issues/49), but the only real solution is to wait for a renewed certificate from the NuGet team. Sorry.
+
+
