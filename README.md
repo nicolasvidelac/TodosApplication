@@ -32,7 +32,7 @@ dotnet ef database update
 dotnet run
 ```
 
-### Important:
+## Important:
 If when you run the app when running the program in linux or docker, you receive an error similar to:
 ##### "The author primary signature's timestamp found a chain building issue: UntrustedRoot"
  
