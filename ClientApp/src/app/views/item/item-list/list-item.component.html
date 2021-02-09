@@ -1,0 +1,27 @@
+<div class="home">
+  <h1>Item's List</h1>
+  <div class="addItem">
+    <input [(ngModel)]="itemDesc" type="text" placeholder="Add Item" class="addText">
+    <button (click)="createItem()"  class="btn btn-sm btn-success ml-1"><i class="material-icons">add</i></button>
+  </div>
+  <ul>
+    <table class="table">
+      <tbody>
+        <tr style="position: relative;" *ngFor="let item of items">
+            <td>
+              <mat-checkbox [checked]="item.completed" (change)="onCompletedChange(item, $event.checked)">        
+                {{item.description}}
+              </mat-checkbox>
+            </td>
+            <td>
+              <div class="columnAction">
+                <button (click)="openDialog(item)" class="btn btn-sm btn-primary mr-1"><i class="material-icons">edit</i></button>
+                <button  class="btn btn-sm btn-danger"  (click)="deleteItem(item)"><i class="material-icons">delete</i></button>
+              </div>
+            </td>
+        </tr>
+      </tbody>
+    </table>
+  
+  </ul>
+</div>
