@@ -25,7 +25,7 @@ To run the program, there is a bash script available on the root folder, it will
 bash script.sh
 ```
 
-If you are on Windows, you can manually run:
+If you are on Windows, or the script doesn't work, you can manually run:
 ```
 dotnet tool install --global dotnet-ef
 dotnet ef database update
