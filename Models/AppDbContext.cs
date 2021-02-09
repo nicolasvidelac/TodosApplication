@@ -11,6 +11,7 @@ namespace TodoList.Models
         }
 
         public DbSet<TodoItem> todoItems { get; set; }
+        public DbSet<TodoFolder> todoFolders { get; set; }
     }
 
 
