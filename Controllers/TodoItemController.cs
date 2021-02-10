@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System.Collections.Generic;
 using System.Threading.Tasks;
@@ -24,6 +25,7 @@ namespace TodoList.Controllers
         }
 
         [HttpGet("{idFolder}")]
+        [Authorize]
         public async Task<ActionResult> ListAsync(int idFolder)
         {
             var result = await _itemSearcher.ListBy(s => s.Folder.Id == idFolder);
@@ -31,6 +33,7 @@ namespace TodoList.Controllers
         }
 
         [HttpPost]
+        [Authorize]
         public async Task<ActionResult> CreateAsync(TodoItemDTO itemDTO)
         {
             try
@@ -50,6 +53,8 @@ namespace TodoList.Controllers
         }
 
         [HttpPatch("item/{id}")]
+        [Authorize]
+
         public async Task<ActionResult> PatchAsync(int id, TodoItemDTO itemDTO)
         {
             var entity = await _itemSearcher.GetBy(id);
@@ -72,6 +77,8 @@ namespace TodoList.Controllers
         }
 
         [HttpDelete("item/{id}")]
+        [Authorize]
+
         public async Task<ActionResult> DeleteAsync(int id)
         {
             try

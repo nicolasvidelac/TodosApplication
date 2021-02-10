@@ -20,7 +20,8 @@ export class ItemListComponent {
   constructor(private basicService : ItemService, public dialog : MatDialog, private route : ActivatedRoute){
     route.params.subscribe(params => {
       this.idFolder = params.id;
-      this.listItems(params.id);
+      this.listItems(this.idFolder);
+
     })
   }
 

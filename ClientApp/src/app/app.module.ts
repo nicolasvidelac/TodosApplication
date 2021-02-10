@@ -1,17 +1,24 @@
-import { MatCardModule, MatCheckboxModule, MatDialogModule, MatFormFieldModule } from '@angular/material';
-
 import { AppComponent } from './app.component';
-import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { BrowserModule } from '@angular/platform-browser';
 import { FolderFormComponent } from "./views/folder/folder-form/form-folder.component";
 import { FolderListComponent } from "./views/folder/folder-list/list-folder.component";
-import { FormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
 import { ItemFormComponent } from './views/item/item-form/form-item.component';
 import { ItemListComponent } from './views/item/item-list/list-item.component';
 import { MatListModule } from "@angular/material/list";
 import { NgModule } from '@angular/core';
 import { RouterModule } from '@angular/router';
+import { LoginComponent } from './views/login/login.component';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { MatToolbarModule,MatMenuModule, MatIconModule, MatButtonModule, MatCheckboxModule, MatDialogModule, MatFormFieldModule, MatTableModule,MatDividerModule, MatProgressSpinnerModule, MatInputModule, MatCardModule, MatSlideToggleModule, MatSelectModule, MatOptionModule} from '@angular/material';
+import { JwtModule } from "@auth0/angular-jwt";
+import { AuthGuardService } from './services/auth-guard.service';
+import { HomeComponent } from './views/home/home.component';
+
+export function tokenGetter(){
+  return localStorage.getItem("jwt");
+}
 
 @NgModule({
   declarations: [
@@ -19,9 +26,26 @@ import { RouterModule } from '@angular/router';
     ItemListComponent,
     ItemFormComponent,
     FolderFormComponent,
-    FolderListComponent
+    FolderListComponent,
+    LoginComponent,
+    HomeComponent
   ],
   imports: [
+    FormsModule,
+    ReactiveFormsModule,
+    BrowserAnimationsModule,
+    MatToolbarModule,
+    MatInputModule,
+    MatCardModule,
+    MatMenuModule,
+    MatIconModule,
+    MatButtonModule,
+    MatTableModule,
+    MatDividerModule,
+    MatSlideToggleModule,
+    MatSelectModule,
+    MatOptionModule,
+    MatProgressSpinnerModule,
     BrowserModule.withServerTransition({ appId: 'ng-cli-universal' }),
     HttpClientModule,
     FormsModule,
@@ -32,10 +56,19 @@ import { RouterModule } from '@angular/router';
     MatCardModule,
     FormsModule,
     RouterModule.forRoot([
-      { path: '', component: FolderListComponent, pathMatch: 'full' },
-      { path: 'items/:id', component: ItemListComponent },
+      { path: '', component: HomeComponent },
+      { path: 'login', component: LoginComponent },
+      { path: 'folders', component: FolderListComponent, canActivate: [AuthGuardService] },
+      { path: 'folders/items/:id', component: ItemListComponent, canActivate: [AuthGuardService] },
       
     ]),
+    JwtModule.forRoot({
+      config: {
+        tokenGetter: tokenGetter,
+        // allowedDomains: ["localhost:44320"],
+        // disallowedRoutes: []
+      }
+    }),
     BrowserAnimationsModule
   ],
   entryComponents: [

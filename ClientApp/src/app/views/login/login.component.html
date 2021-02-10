@@ -1,0 +1,23 @@
+<mat-card>
+  <mat-card-content>
+    <form class="form-signin" #loginForm="ngForm" (ngSubmit)="login(loginForm)">
+      <h2>Log In</h2>
+      <mat-error *ngIf="invalidLogin">
+        Username and password are not valid
+      </mat-error>
+      <mat-form-field class="full-width-input">
+        <input matInput placeholder="Username" type="email" name="username" ngModel class="form-control" required autofocus>
+        <mat-error>
+          Please provide a valid username
+        </mat-error>
+      </mat-form-field>
+      <mat-form-field class="full-width-input">
+        <input matInput type="password" placeholder="Password" type="password" name="password" ngModel class="form-control"required>
+        <mat-error>
+          Please provide a valid password
+        </mat-error>
+      </mat-form-field>
+      <button mat-raised-button type="submit" color="primary">Login</button>
+    </form>
+  </mat-card-content>
+</mat-card>

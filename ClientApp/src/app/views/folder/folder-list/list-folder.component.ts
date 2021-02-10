@@ -21,7 +21,13 @@ export class FolderListComponent {
 
   listfolders(){
     this.basicService.list().then(result => {
-      this.folders = result.data
+      try {
+        this.folders = result.data
+      } catch (error) {
+        this.folders = []
+      }
+      
+      
     })
   }
 
@@ -41,7 +47,7 @@ export class FolderListComponent {
   }
 
   openItems(id : number){
-    this.router.navigate(['/items/', id])
+    this.router.navigate(['folders/items/', id])
   }
 
 }

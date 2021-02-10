@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using System.Threading.Tasks;
 using TodoList.Context;
 using TodoList.Models;
@@ -21,12 +22,14 @@ namespace TodoList.Controllers
         }
 
         [HttpGet]
+        [Authorize]
         public async Task<ActionResult> ListAsync()
         {
             return Ok(await _folderSearcher.ListBy(null));
         }
 
         [HttpPost]
+        [Authorize]
         public async Task<ActionResult> CreateAsync(TodoFolder item)
         {
             if (item.Description != "" && item.Description != null)
@@ -41,6 +44,7 @@ namespace TodoList.Controllers
         }
 
         [HttpDelete("{id}")]
+        [Authorize]
         public async Task<ActionResult> DeleteAsync(int id)
         {
             try
