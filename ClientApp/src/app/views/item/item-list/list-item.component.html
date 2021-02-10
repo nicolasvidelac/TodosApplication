@@ -1,27 +1,36 @@
-<div class="home">
-  <h1>Item's List</h1>
-  <div class="addItem">
-    <input [(ngModel)]="itemDesc" type="text" placeholder="Add Item" class="addText">
-    <button (click)="createItem()"  class="btn btn-sm btn-success ml-1"><i class="material-icons">add</i></button>
-  </div>
-  <ul>
-    <table class="table">
-      <tbody>
-        <tr style="position: relative;" *ngFor="let item of items">
-            <td>
-              <mat-checkbox [checked]="item.completed" (change)="onCompletedChange(item, $event.checked)">        
-                {{item.description}}
-              </mat-checkbox>
-            </td>
-            <td>
-              <div class="columnAction">
-                <button (click)="openDialog(item)" class="btn btn-sm btn-primary mr-1"><i class="material-icons">edit</i></button>
-                <button  class="btn btn-sm btn-danger"  (click)="deleteItem(item)"><i class="material-icons">delete</i></button>
-              </div>
-            </td>
-        </tr>
-      </tbody>
-    </table>
-  
-  </ul>
+<div class="main">
+  <mat-card class="card">
+    <mat-card-content>
+      <h1>
+        Item's List
+      </h1>
+      <div class="row">
+        <div class="col">
+          <mat-form-field>
+            <input matInput [(ngModel)]="itemDesc" type="text" placeholder="Add Item" name="description" ngModel class="form-control">
+          </mat-form-field>
+          <button mat-raised-button (click)="createItem()"  style="background-color: #320A28;" class="btn btn-sm btn-success ml-5"><i class="material-icons">add</i></button>
+        </div>
+      </div>
+      <ul>
+        <table class="table">
+          <tbody>
+            <tr style="position: relative;" *ngFor="let item of items">
+                <td style="text-align: start;">
+                  <mat-checkbox  [checked]="item.completed" (change)="onCompletedChange(item, $event.checked)">        
+                    {{item.description}}
+                  </mat-checkbox>
+                </td>
+                <td>
+                  <div class="columnAction">
+                    <button (click)="openDialog(item)" style="background-color: #E0D68A; color: black;" class="btn btn-sm mr-1"><i class="material-icons">edit</i></button>
+                    <button (click)="deleteItem(item)" style="background-color: #8E443D; color: white;" class="btn btn-sm"><i class="material-icons">delete</i></button>
+                  </div>
+                </td>
+            </tr>
+          </tbody>
+        </table>
+      </ul>
+    </mat-card-content>
+  </mat-card>
 </div>

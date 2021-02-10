@@ -1,7 +1,6 @@
 import { AppComponent } from './app.component';
 import { BrowserModule } from '@angular/platform-browser';
-import { FolderFormComponent } from "./views/folder/folder-form/form-folder.component";
-import { FolderListComponent } from "./views/folder/folder-list/list-folder.component";
+import { FolderListComponent } from "./views/folder/list-folder.component";
 import { HttpClientModule } from '@angular/common/http';
 import { ItemFormComponent } from './views/item/item-form/form-item.component';
 import { ItemListComponent } from './views/item/item-list/list-item.component';
@@ -25,7 +24,6 @@ export function tokenGetter(){
     AppComponent,
     ItemListComponent,
     ItemFormComponent,
-    FolderFormComponent,
     FolderListComponent,
     LoginComponent,
     HomeComponent
@@ -64,16 +62,13 @@ export function tokenGetter(){
     ]),
     JwtModule.forRoot({
       config: {
-        tokenGetter: tokenGetter,
-        // allowedDomains: ["localhost:44320"],
-        // disallowedRoutes: []
+        tokenGetter: tokenGetter
       }
     }),
     BrowserAnimationsModule
   ],
   entryComponents: [
     ItemFormComponent,
-    FolderFormComponent
   ],
   providers: [],
   bootstrap: [AppComponent]

@@ -59,7 +59,7 @@ export class ItemListComponent {
 
   openDialog(item: todoItem){
     const dialogRef = this.dialog.open(ItemFormComponent, {
-      width: '300px',
+      width: '500px',
       data: {description: item.description}
     });
 

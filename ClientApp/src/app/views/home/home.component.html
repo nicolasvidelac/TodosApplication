@@ -1,15 +1,27 @@
-  <h1>Home Page</h1>
-
-<br>
-<div *ngIf="isUserAuthenticated()" style="color:blue;">
-  <h2>
-    YOU ARE LOGGED IN
-  </h2>
+<div class="main">
+  <mat-card class="card">
+    <mat-card-content>
+      <h1>
+        To-do's Lists
+      </h1>
+      <br>
+      <div *ngIf="isUserAuthenticated()" style="color: #320A28;">
+        <h2>
+          Welcome again!
+        </h2>
+      </div>
+      <div *ngIf="!isUserAuthenticated()" style="color: #320A28;">
+        <h2>
+          Welcome!
+        </h2>
+      </div>
+      <div class="row mt-3">
+        <div class="col">
+          <button style="background-color: #CB9173; color: black;" mat-raised-button *ngIf="isUserAuthenticated()"  [routerLink]="['/folders']" routerLinkActive="router-link-active" class="mr-3">Folders</button>
+          <button style="background-color: #511730; color: white;" mat-raised-button *ngIf="!isUserAuthenticated()" [routerLink]="['/login']" routerLinkActive="router-link-active">Login</button>
+          <button style="background-color: #E0D68A; color: black;" mat-raised-button *ngIf="isUserAuthenticated()"  (click)="logOut()" >Logout</button>
+        </div>
+      </div>
+    </mat-card-content>
+  </mat-card>
 </div>
-
-<br>
-<ul>
-  <li><a [routerLink]="['/folders']" routerLinkActive="router-link-active">Folders</a></li>
-  <li *ngIf="!isUserAuthenticated()"><a routerLink="/login">Login</a></li>
-  <li *ngIf="isUserAuthenticated()"><a class="logout" (click)="logOut()">Logout</a></li>
-</ul>

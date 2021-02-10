@@ -1,8 +1,16 @@
-<div>
-  <h3 style="margin-bottom: 20px;">Edit item:</h3>
-  <input [(ngModel)]="data.description">
+<div class="dialog">
+  <div class="row">
+    <h1 style="margin-bottom: 20px;  margin-left: 35%; ">
+      Edit item
+    </h1>
+  </div>
+  <div class="row" row="addfolder">
+    <div class="col">
+      <mat-form-field>
+        <input matInput [(ngModel)]="data.description" type="text" placeholder="description" name="description" ngModel class="form-control">
+      </mat-form-field>
+      <button mat-raised-button [mat-dialog-close]="data" style="background-color: #320A28; color: white;" class="btn btn-sm ml-5"><i class="material-icons">save</i></button>
+    </div>
+  </div>
 </div>
-<div style="text-align: right;">
-  <button [mat-dialog-close]="data" style="margin-top: 20px;" class="btn btn-primary col-3"><i
-    class="material-icons f-right">save</i></button>
-</div>
+
