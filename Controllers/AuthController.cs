@@ -5,8 +5,11 @@ using System.Collections.Generic;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
+using System.Threading.Tasks;
+using TodoList.DTO;
 using TodoList.Extras;
 using TodoList.Models;
+using TodoList.Repository;
 
 namespace TodoList.Controllers
 {
@@ -14,15 +17,26 @@ namespace TodoList.Controllers
     [ApiController]
     public class AuthController : Controller
     {
+        private readonly ISearcher<User> _userSearcher;
+
+        public AuthController(ISearcher<User> userSearcher)
+        {
+            _userSearcher = userSearcher;
+        }
 
         [Route("login"), HttpPost]
-        public IActionResult Login ([FromBody] User user)
+        public async Task<IActionResult> Login (UserDTO userDTO)
         {
-            if (user == null)
+            if (userDTO == null)
             {
                 return BadRequest();
             }
-            else if (user.Username == "johndoe" && user.Password == "1234")
+
+            userDTO.Username = userDTO.Username.ToLower();
+
+            var result = await _userSearcher.GetBy(x => x.Username == userDTO.Username && x.Password == userDTO.Password);
+
+            if (result != null)
             {
                 var secretBytes = Encoding.UTF8.GetBytes(Constants.Secret);
                 var key = new SymmetricSecurityKey(secretBytes);
@@ -34,8 +48,9 @@ namespace TodoList.Controllers
                 var token = new JwtSecurityToken(
                     Constants.Issuer,
                     Constants.Audiance,
-                    claims: new List<Claim>(),
+                    claims: new Claim[] { new Claim("userId", result.Id) },
                     notBefore: DateTime.Now,
+                    
                     expires: DateTime.Now.AddDays(1),
                     signingCredentials
                 );
@@ -50,6 +65,31 @@ namespace TodoList.Controllers
                 return Unauthorized();
             }
         }
-        
+        [Route("register"), HttpPost]
+        public async Task<IActionResult> Register (UserDTO userDTO)
+        {
+            if (string.IsNullOrEmpty(userDTO.Username) || string.IsNullOrEmpty(userDTO.Password))
+            {
+                return BadRequest();
+            }
+
+            userDTO.Username = userDTO.Username.ToLower();
+
+            var users = await _userSearcher.ListBy(null);
+
+            foreach (var item in users)
+            {
+                if (item.Username == userDTO.Username)
+                {
+                    return BadRequest();
+                }
+            }
+
+            User entity = new User() { Password = userDTO.Password, Username = userDTO.Username };
+
+            await _userSearcher.Insert(entity);
+
+            return Ok();
+        }
     }
 }

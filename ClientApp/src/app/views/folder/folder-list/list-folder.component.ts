@@ -26,8 +26,6 @@ export class FolderListComponent {
       } catch (error) {
         this.folders = []
       }
-      
-      
     })
   }
 

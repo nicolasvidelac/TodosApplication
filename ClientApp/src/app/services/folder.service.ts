@@ -19,7 +19,7 @@ export class FolderService {
     try {
       return await this.axios.post( this.baseUrl + 'api/v1/todoFolder', { description: folderDesc},{
         headers:{
-            'Authorization': `Bearer ${localStorage.getItem("jwt")}`
+          'Authorization': `Bearer ${localStorage.getItem("jwt")}`
         }
     })
     } catch (error) {

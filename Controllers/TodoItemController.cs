@@ -40,7 +40,7 @@ namespace TodoList.Controllers
             {
                 TodoItem newItem = new TodoItem();
                 newItem.Description = itemDTO.Description;
-                newItem.Folder = await _folderSearcher.GetBy(itemDTO.Folder.Id);
+                newItem.Folder = await _folderSearcher.GetById(itemDTO.Folder.Id);
                 
 
                 return Ok(await _itemSearcher.Insert(newItem));
@@ -57,7 +57,7 @@ namespace TodoList.Controllers
 
         public async Task<ActionResult> PatchAsync(int id, TodoItemDTO itemDTO)
         {
-            var entity = await _itemSearcher.GetBy(id);
+            var entity = await _itemSearcher.GetById(id);
 
             try
             {
