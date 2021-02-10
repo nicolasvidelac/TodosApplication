@@ -3,7 +3,7 @@ import { Inject, Injectable } from '@angular/core';
 @Injectable({
   providedIn: 'root'
 })
-export class LoginService {
+export class UserService {
 
   baseUrl: string;
   axios;
@@ -14,10 +14,20 @@ export class LoginService {
   }
 
 
-  public async create(credentials) {
+  public async login(credentials) {
     try {
       return await this.axios.post( this.baseUrl + 'api/v1/auth/login', credentials)
     } catch (error) {
+    }
+  }
+
+  
+  public async register(credentials) {
+    try {
+      await this.axios.post( this.baseUrl + 'api/v1/auth/register', credentials);
+      return true;
+    } catch (error) {
+      return false;
     }
   }
   

@@ -1,9 +1,12 @@
 <mat-card>
   <mat-card-content>
-    <form class="form-signin" #loginForm="ngForm" (ngSubmit)="login(loginForm)">
-      <h2>Log In</h2>
+    <form class="form-signin" #loginForm="ngForm" >
+      <h2>Log In or Register</h2>
       <mat-error *ngIf="invalidLogin">
         Username and password are not valid
+      </mat-error>
+      <mat-error *ngIf="invalidRegister">
+        Username already exists
       </mat-error>
       <mat-form-field class="full-width-input">
         <input matInput placeholder="Username" type="email" name="username" ngModel class="form-control" required autofocus>
@@ -17,7 +20,8 @@
           Please provide a valid password
         </mat-error>
       </mat-form-field>
-      <button mat-raised-button type="submit" color="primary">Login</button>
+      <button mat-raised-button (click)=login(loginForm) color="primary">Login</button>
+      <button mat-raised-button (click)=register(loginForm) color="secondary">Register</button>
     </form>
   </mat-card-content>
 </mat-card>
