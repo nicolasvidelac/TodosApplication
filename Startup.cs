@@ -1,11 +1,15 @@
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.AspNetCore.SpaServices.AngularCli;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Microsoft.IdentityModel.Tokens;
+using System.Text;
+using System.Threading.Tasks;
+using TodoList.Extras;
 using TodoList.Models;
 using TodoList.Repository;
 
@@ -23,6 +27,41 @@ namespace TodoList
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddCors(opt =>
+            {
+               opt.AddPolicy("EnableCORS", builder =>
+               {
+                   builder.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader();
+               });
+            });
+
+
+            services.AddAuthentication("OAuth")
+                .AddJwtBearer("OAuth", config =>
+                {
+                    var secretBytes = Encoding.UTF8.GetBytes(Constants.Secret);
+                    var key = new SymmetricSecurityKey(secretBytes);
+
+                    config.Events = new JwtBearerEvents()
+                    {
+                        OnMessageReceived = context =>
+                        {
+                            if (context.Request.Query.ContainsKey("access_token"))
+                            {
+                                context.Token = context.Request.Query["access_token"];
+                            }
+                            return Task.CompletedTask;
+                        }
+                    };
+
+                    config.TokenValidationParameters = new TokenValidationParameters()
+                    {
+                        ValidIssuer = Constants.Issuer,
+                        ValidAudience = Constants.Audiance,
+                        IssuerSigningKey = key
+                    };
+                });
+
             services.AddControllersWithViews();
 
             services.AddScoped(typeof(ISearcher<>), typeof(Searcher<>));
@@ -56,7 +95,13 @@ namespace TodoList
                 app.UseSpaStaticFiles();
             }
 
+            app.UseCors("EnableCORS");
+
             app.UseRouting();
+
+            app.UseAuthentication();
+
+            app.UseAuthorization();
 
             app.UseEndpoints(endpoints =>
             {

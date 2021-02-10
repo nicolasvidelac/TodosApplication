@@ -29,6 +29,17 @@ namespace TodoList.Repository
             return await query.ToListAsync();
         }
 
+        public async Task<T> GetBy(Expression<Func<T, bool>> predicate)
+        {
+            IQueryable<T> query = _dbSet;
+            if (predicate != null)
+            {
+                query = query.Where(predicate).AsQueryable();
+            }
+
+            return (await query.ToListAsync()).FirstOrDefault();
+        }
+
         public async Task<T> Insert(T entity)
         {
             _context.Add(entity);
@@ -40,7 +51,7 @@ namespace TodoList.Repository
         {
             try
             {
-                var editedEntity = await GetBy(id);
+                var editedEntity = await GetById(id);
                 _context.Entry(editedEntity).CurrentValues.SetValues(entity);
                 await _context.SaveChangesAsync();
                 return editedEntity;
@@ -51,7 +62,7 @@ namespace TodoList.Repository
             }
         }
 
-        public virtual async Task<T> GetBy(int id)
+        public virtual async Task<T> GetById(int id)
         {
             var entity = await _dbSet.FindAsync(id);
 
@@ -60,7 +71,7 @@ namespace TodoList.Repository
 
         public async Task Remove(int id)
         {
-            var entity = await GetBy(id);
+            var entity = await GetById(id);
             _dbSet.Remove(entity);
             await _context.SaveChangesAsync();
         }

@@ -1,0 +1,37 @@
+<div class="main">
+  <mat-card class="card">
+    <mat-card-content>
+      <h1>
+        Folder's List
+      </h1>
+      <div class="row addfolder">
+        <div class="col">
+          <mat-form-field>
+            <input matInput [(ngModel)]="folderDesc" type="text" placeholder="Add folder" name="description" ngModel class="form-control">
+          </mat-form-field>
+          <button mat-raised-button (click)="createfolder()" style="background-color: #320A28; color: white;" class="btn btn-sm ml-5"><i class="material-icons">add</i></button>
+        </div>
+      </div>
+      <ul>
+        <table class="table">
+          <tbody>
+            <tr *ngFor="let folder of folders">
+              <td>
+                <mat-nav-list>
+                  <mat-list-item (click)="openItems(folder.id)" >
+                    {{folder.description}}
+                  </mat-list-item>
+                </mat-nav-list>
+              </td>
+              <td>
+                <div style="margin-top: 10px;">
+                  <button style="background-color: #8E443D; color: white;" class="btn btn-sm" (click)="deletefolder(folder)"><i class="material-icons">delete</i></button>
+                </div>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </ul>
+    </mat-card-content>
+  </mat-card>
+</div>

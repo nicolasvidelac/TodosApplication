@@ -1,5 +1,4 @@
 import { Component } from '@angular/core';
-import { FolderFormComponent } from '../folder-form/form-folder.component';
 import { FolderService } from 'src/app/services/folder.service';
 import { MatDialog } from '@angular/material';
 import { Router } from '@angular/router';
@@ -21,7 +20,11 @@ export class FolderListComponent {
 
   listfolders(){
     this.basicService.list().then(result => {
-      this.folders = result.data
+      try {
+        this.folders = result.data
+      } catch (error) {
+        this.folders = []
+      }
     })
   }
 
@@ -41,7 +44,7 @@ export class FolderListComponent {
   }
 
   openItems(id : number){
-    this.router.navigate(['/items/', id])
+    this.router.navigate(['folders/items/', id])
   }
 
 }

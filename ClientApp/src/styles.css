@@ -1,84 +1,24 @@
-/* You can add global styles to this file, and also import other style files */
+body {
+    background-color: lightgray;
 
-/* Provide sufficient contrast against white background */
-a {
-  color: #0366d6;
+}
+  
+.main {
+    text-align: center; 
+    justify-content: center; 
+    display: flex; 
+    height: 100vh; 
+}
+  
+.card{
+    margin-top: 150px;
+    min-width: 500px;
+    height: fit-content;
 }
 
-code {
-  color: #e01a76;
+.dialog {
+    min-width: 200px;
+    height: fit-content;
+    text-align: center !important; 
+    justify-content: center !important; 
 }
-
-.btn-primary {
-  color: #fff;
-  background-color: #1b6ec2;
-  border-color: #1861ac;
-}
-
-.home {
-  min-width: 500px;
-  width: max-content;
-  text-align: left;
-  margin: 0 auto;
-  margin-top: 20px;
-  font-family: sans-serif;
-}
-
-.columnAction {
-  padding-left: 10px;
-  text-align: right;
-}
-
-.example-container {
-  display: flex;
-  flex-direction: column;
-}
-
-.example-container > * {
-  width: 100%;
-}
-
-h1 {
-  text-align: center;
-  background-color: #d4d4d4;
-  padding: 30px 0px;
-  margin-top: 0px;
-}
-
-ul {
-  list-style: none;
-  font-size: 20px;
-  color: #686868;
-  margin-left: -40px;
-  margin-bottom: 0px;
-}
-
-li {
-  border-bottom: 1px solid #ededed;
-  background-color: #f4f4f4;
-  padding: 10px 0px;
-  margin-bottom: 5px;
-}
-
-li span {
-  cursor: pointer;
-  position: relative;
-  float: right;
-  margin-right: 10px;
-}
-
-.addItem {
-  padding-bottom: 10px;
-}
-
-.addText {
-  width: 80%;
-  height: 30px;
-}
-
-.addItem button {
-  height: 35px;
-  width: 50px;
-}
-html, body { height: 100%; }
-body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }

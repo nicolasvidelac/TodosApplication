@@ -10,7 +10,8 @@ namespace TodoList.Repository
         public Task<IEnumerable<T>> ListBy(Expression<Func<T, bool>> predicate);
         public  Task<T> Insert(T entity);
         public  Task<T> Update(int id, T entity);
-        public Task<T> GetBy(int id);
+        public Task<T> GetById(int id);
+        public Task<T> GetBy(Expression<Func<T, bool>> predicate);
         public Task Remove(int id);
      }
 }

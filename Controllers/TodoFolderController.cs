@@ -1,4 +1,6 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
+using System.Security.Claims;
 using System.Threading.Tasks;
 using TodoList.Context;
 using TodoList.Models;
@@ -11,27 +13,45 @@ namespace TodoList.Controllers
 
     public class TodoFolderController : Controller
     {
-        ISearcher<TodoFolder> _folderSearcher;
-        ISearcher<TodoItem> _itemSearcher;
+        private readonly ISearcher<TodoFolder> _folderSearcher;
+        private readonly ISearcher<TodoItem> _itemSearcher;
+        private readonly ISearcher<User> _userSearcher;
 
-        public TodoFolderController(ISearcher<TodoFolder> folderSearcher, ISearcher<TodoItem> itemSearcher)
+        public TodoFolderController(ISearcher<TodoFolder> folderSearcher, ISearcher<TodoItem> itemSearcher, ISearcher<User> userSearcher)
         {
             _folderSearcher = folderSearcher;
             _itemSearcher = itemSearcher;
+            _userSearcher = userSearcher;
         }
 
         [HttpGet]
+        [Authorize]
         public async Task<ActionResult> ListAsync()
         {
-            return Ok(await _folderSearcher.ListBy(null));
+            
+            var userId = User.FindFirst("userId")?.Value;
+
+            return Ok(await _folderSearcher.ListBy(x => x.user.Id == userId));
         }
 
         [HttpPost]
+        [Authorize]
         public async Task<ActionResult> CreateAsync(TodoFolder item)
         {
-            if (item.Description != "" && item.Description != null)
+            if (!string.IsNullOrWhiteSpace(item.Description))
             {
-                return Ok(await _folderSearcher.Insert(item));
+                try
+                {
+                    item.user = await _userSearcher.GetBy(x => x.Id == User.FindFirst("userId").Value);
+                    await _folderSearcher.Insert(item);
+                    return Ok();
+                }
+                catch (System.Exception)
+                {
+
+                    throw;
+                }
+
             }
             else
             {
@@ -41,6 +61,7 @@ namespace TodoList.Controllers
         }
 
         [HttpDelete("{id}")]
+        [Authorize]
         public async Task<ActionResult> DeleteAsync(int id)
         {
             try

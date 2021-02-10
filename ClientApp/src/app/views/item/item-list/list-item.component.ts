@@ -20,7 +20,8 @@ export class ItemListComponent {
   constructor(private basicService : ItemService, public dialog : MatDialog, private route : ActivatedRoute){
     route.params.subscribe(params => {
       this.idFolder = params.id;
-      this.listItems(params.id);
+      this.listItems(this.idFolder);
+
     })
   }
 
@@ -58,7 +59,7 @@ export class ItemListComponent {
 
   openDialog(item: todoItem){
     const dialogRef = this.dialog.open(ItemFormComponent, {
-      width: '300px',
+      width: '500px',
       data: {description: item.description}
     });
 
