@@ -6,10 +6,21 @@ import { JwtHelperService } from '@auth0/angular-jwt';
   selector: 'app-home',
   templateUrl: './home.component.html',
 })
-export class HomeComponent {
+export class HomeComponent implements OnInit{
+  
+  userName = "";
 
   constructor(private router: Router, private jwtHelper: JwtHelperService ) { }
 
+  ngOnInit(){
+    try {
+      this.userName = localStorage.getItem("username")
+    } catch (error) {
+      
+    }
+      
+    
+  }
   isUserAuthenticated(){
     const token: string = localStorage.getItem("jwt");
     if (token && !this.jwtHelper.isTokenExpired(token)){

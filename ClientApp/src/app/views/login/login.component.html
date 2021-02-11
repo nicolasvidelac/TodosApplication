@@ -2,7 +2,8 @@
   <mat-card class="card" >
     <mat-card-content >
       <form class="form-signin" #loginForm="ngForm" >
-        <h2>Log in or Register</h2>
+        <h2 *ngIf="isRegistered">Sign in</h2>
+        <h2 *ngIf="!isRegistered">Sign up</h2>
         <mat-error *ngIf="invalidLogin">
           Username and password are not valid
         </mat-error>
@@ -27,8 +28,8 @@
             </mat-form-field>
           </div>
           <div class="row" class="m-0">
-            <button mat-raised-button (click)=login(loginForm) style="background-color:#511730; color: white;">Login</button>
-            <button mat-raised-button (click)=register(loginForm) style="background-color:#E0D68A; color: black; margin-left: 5px;">Register</button>
+            <button mat-raised-button *ngIf="isRegistered" (click)=login(loginForm) style="background-color:#511730; color: white;">Sign in</button>
+            <button mat-raised-button *ngIf="!isRegistered" (click)=register(loginForm) style="background-color:#E0D68A; color: black; margin-left: 5px;">Create account</button>
           </div>
         </div>
       </form>

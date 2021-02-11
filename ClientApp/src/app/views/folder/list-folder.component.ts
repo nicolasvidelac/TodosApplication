@@ -43,8 +43,9 @@ export class FolderListComponent {
     })
   }
 
-  openItems(id : number){
-    this.router.navigate(['folders/items/', id])
+  openItems(folder : todoFolder){
+    localStorage.setItem("folderDesc", folder.description)
+    this.router.navigate(['folders/items/', folder.id])
   }
 
 }

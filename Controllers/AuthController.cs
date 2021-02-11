@@ -58,7 +58,7 @@ namespace TodoList.Controllers
 
                 var tokenJson = new JwtSecurityTokenHandler().WriteToken(token);
 
-                return Ok(new { access_token = tokenJson });
+                return Ok(new { access_token = tokenJson, username = userDTO.Username });
             }
             else
             {

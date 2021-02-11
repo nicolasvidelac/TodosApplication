@@ -1,6 +1,6 @@
 import { ActivatedRoute, Router } from '@angular/router';
 
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { ItemFormComponent } from '../item-form/form-item.component';
 import { ItemService } from 'src/app/services/item.service';
 import { MatDialog } from '@angular/material';
@@ -11,9 +11,10 @@ import { todoItem } from 'src/app/models/todoItem';
   templateUrl: './list-item.component.html',
 })
 
-export class ItemListComponent {
+export class ItemListComponent implements OnInit{
   items : todoItem[];
   itemDesc = "";
+  folderDesc = "";
   idFolder = 0;
   isCompleted : boolean = false;
   
@@ -23,6 +24,10 @@ export class ItemListComponent {
       this.listItems(this.idFolder);
 
     })
+  }
+
+  ngOnInit(){
+    this.folderDesc = localStorage.getItem("folderDesc");
   }
 
   listItems(id : number){

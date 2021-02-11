@@ -18,7 +18,7 @@
             <tr *ngFor="let folder of folders">
               <td>
                 <mat-nav-list>
-                  <mat-list-item (click)="openItems(folder.id)" >
+                  <mat-list-item (click)="openItems(folder)" >
                     {{folder.description}}
                   </mat-list-item>
                 </mat-nav-list>

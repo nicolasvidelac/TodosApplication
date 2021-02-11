@@ -1,19 +1,32 @@
-import { Component, Input } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 import { NgForm } from '@angular/forms';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { UserService } from 'src/app/services/user.service';
 
 @Component({
   selector: 'app-login',
   templateUrl: './login.component.html',
 })
-export class LoginComponent {
+export class LoginComponent implements OnInit {
 
   invalidLogin: boolean = false;
   invalidRegister: boolean = false;
 
+  isRegistered: boolean = false;
 
-  constructor(private basicService : UserService, private router : Router) { }
+  constructor(private basicService : UserService, private router : Router, private route : ActivatedRoute) {
+  }
+
+  ngOnInit(){
+    this.route.queryParams.subscribe( param => {
+      console.log(param["isRegistered"])
+      if (param["isRegistered"] == "true"){
+        this.isRegistered = true
+      } else {
+        this.isRegistered = false
+      }
+    })
+  }
 
   login(form: NgForm){
     const credentials = {
@@ -23,8 +36,9 @@ export class LoginComponent {
     
     this.basicService.login(credentials).then(response => {
       try {
-        const token = response.data.access_token;
-        localStorage.setItem("jwt", token);
+        console.log(response)
+        localStorage.setItem("jwt", response.data.access_token);
+        localStorage.setItem("username", response.data.username)
         this.invalidLogin = false;
         this.invalidRegister = false;
         this.router.navigate(["/folders"])
