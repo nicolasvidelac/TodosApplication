@@ -16,7 +16,7 @@ This exist because it was requested for a job interview.
 <br />
 
 ## Requirements:
-To be able to run this, you need to install .NET 5.0 SDK, which is available for Windows, Mac OS and several Linux distros:
+To be able to run this, you only need to install .NET 5.0 SDK, which is available for Windows, Mac OS and several Linux distrosthen, then, all other the dependencies will be installed automatically:
 https://dotnet.microsoft.com/download/dotnet/5.0
 
 ### How to run:
@@ -38,4 +38,5 @@ If when you run the app when running the program in linux or docker, you receive
  
  This is because Microsoft's "NuGet" Framework certificate has expired at the end of Januray 2021 and it has not been renewed yet. There are several workarounds on the internet (see: https://github.com/NuGet/Announcements/issues/49), but the only real solution is to wait for a renewed certificate from the NuGet team. Sorry.
 
-
+### How does it work:
+I programmed this project using OOP. There are only 3 classes, User, Folder and Item 
