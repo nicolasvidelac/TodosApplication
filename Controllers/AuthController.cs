@@ -24,8 +24,8 @@ namespace TodoList.Controllers
             _userSearcher = userSearcher;
         }
 
-        [Route("login"), HttpPost]
-        public async Task<IActionResult> Login (UserDTO userDTO)
+        [Route("signin"), HttpPost]
+        public async Task<IActionResult> SignIn (UserDTO userDTO)
         {
             if (userDTO == null)
             {
@@ -33,6 +33,7 @@ namespace TodoList.Controllers
             }
 
             userDTO.Username = userDTO.Username.ToLower();
+            userDTO.Password = Constants.EncryptPwd(userDTO.Password);
 
             var result = await _userSearcher.GetBy(x => x.Username == userDTO.Username && x.Password == userDTO.Password);
 
@@ -65,8 +66,8 @@ namespace TodoList.Controllers
                 return Unauthorized();
             }
         }
-        [Route("register"), HttpPost]
-        public async Task<IActionResult> Register (UserDTO userDTO)
+        [Route("signup"), HttpPost]
+        public async Task<IActionResult> SingUp (UserDTO userDTO)
         {
             if (string.IsNullOrEmpty(userDTO.Username) || string.IsNullOrEmpty(userDTO.Password))
             {
@@ -85,7 +86,7 @@ namespace TodoList.Controllers
                 }
             }
 
-            User entity = new User() { Password = userDTO.Password, Username = userDTO.Username };
+            User entity = new User() { Password = Constants.EncryptPwd(userDTO.Password), Username = userDTO.Username };
 
             await _userSearcher.Insert(entity);
 

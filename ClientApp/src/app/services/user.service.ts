@@ -16,7 +16,7 @@ export class UserService {
 
   public async login(credentials) {
     try {
-      return await this.axios.post( this.baseUrl + 'api/v1/auth/login', credentials)
+      return await this.axios.post( this.baseUrl + 'api/v1/auth/signin', credentials)
     } catch (error) {
     }
   }
@@ -24,7 +24,7 @@ export class UserService {
   
   public async register(credentials) {
     try {
-      await this.axios.post( this.baseUrl + 'api/v1/auth/register', credentials);
+      await this.axios.post( this.baseUrl + 'api/v1/auth/signup', credentials);
       return true;
     } catch (error) {
       return false;
