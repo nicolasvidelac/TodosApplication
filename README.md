@@ -1,8 +1,7 @@
 # To-do's Application
 
 ## About:
-This is a simple "To do" notes app, with folder to group those, and, hopefully, user login.
-This exist because it was requested for a job interview.
+Simple app to write down to-do's and group them in folders, with user auth.
 
 ### Languages and Tools:
 <img align="left" alt="Visual Studio Code" width="26px" src="https://raw.githubusercontent.com/github/explore/80688e429a7d4ef2fca1e82350fe8e3517d3494d/topics/visual-studio-code/visual-studio-code.png" />
