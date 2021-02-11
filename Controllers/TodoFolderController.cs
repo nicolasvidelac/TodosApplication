@@ -3,8 +3,10 @@ using Microsoft.AspNetCore.Mvc;
 using System.Security.Claims;
 using System.Threading.Tasks;
 using TodoList.Context;
+using TodoList.DTO;
 using TodoList.Models;
 using TodoList.Repository;
+using TodoList.Services.IServices;
 
 namespace TodoList.Controllers
 {
@@ -13,15 +15,11 @@ namespace TodoList.Controllers
 
     public class TodoFolderController : Controller
     {
-        private readonly ISearcher<TodoFolder> _folderSearcher;
-        private readonly ISearcher<TodoItem> _itemSearcher;
-        private readonly ISearcher<User> _userSearcher;
+        private readonly ITodoFolderService _todoFoldersService;
 
-        public TodoFolderController(ISearcher<TodoFolder> folderSearcher, ISearcher<TodoItem> itemSearcher, ISearcher<User> userSearcher)
+        public TodoFolderController(ITodoFolderService todoFoldersService)
         {
-            _folderSearcher = folderSearcher;
-            _itemSearcher = itemSearcher;
-            _userSearcher = userSearcher;
+            _todoFoldersService = todoFoldersService;
         }
 
         [HttpGet]
@@ -29,21 +27,20 @@ namespace TodoList.Controllers
         public async Task<ActionResult> ListAsync()
         {
             
-            var userId = User.FindFirst("userId")?.Value;
-
-            return Ok(await _folderSearcher.ListBy(x => x.user.Id == userId));
+            string userId = User.FindFirst("userId")?.Value;
+            var result = await  _todoFoldersService.List(userId);
+            return Ok(result);
         }
 
         [HttpPost]
         [Authorize]
-        public async Task<ActionResult> CreateAsync(TodoFolder item)
+        public async Task<ActionResult> CreateAsync(TodoFolderDTO item)
         {
             if (!string.IsNullOrWhiteSpace(item.Description))
             {
                 try
                 {
-                    item.user = await _userSearcher.GetBy(x => x.Id == User.FindFirst("userId").Value);
-                    await _folderSearcher.Insert(item);
+                    await _todoFoldersService.Create(item, @User.FindFirst("userId").Value);
                     return Ok();
                 }
                 catch (System.Exception)
@@ -66,14 +63,7 @@ namespace TodoList.Controllers
         {
             try
             {
-                var folderItems = await _itemSearcher.ListBy(s => s.Folder.Id == id);
-
-                foreach (var item in folderItems)
-                {
-                    await _itemSearcher.Remove(item.Id);
-                }
-
-                await _folderSearcher.Remove(id);
+                await _todoFoldersService.Remove(id);
                 return Ok(true);
             }
             catch (System.Exception)

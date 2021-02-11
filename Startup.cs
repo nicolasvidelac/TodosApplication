@@ -12,6 +12,8 @@ using System.Threading.Tasks;
 using TodoList.Extras;
 using TodoList.Models;
 using TodoList.Repository;
+using TodoList.Services;
+using TodoList.Services.IServices;
 
 namespace TodoList
 {
@@ -65,6 +67,9 @@ namespace TodoList
             services.AddControllersWithViews();
 
             services.AddScoped(typeof(ISearcher<>), typeof(Searcher<>));
+            services.AddScoped<ITodoFolderService, TodoFolderService>();
+            services.AddScoped<ITodoItemsService, TodoItemsService>();
+
             services.AddDbContext<AppDbContext>(options => options.UseSqlServer(Configuration.GetConnectionString("DevConnection")));
 
             // In production, the Angular files will be served from this directory

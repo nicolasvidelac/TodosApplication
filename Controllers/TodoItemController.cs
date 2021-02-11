@@ -1,12 +1,8 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
-using System.Collections.Generic;
 using System.Threading.Tasks;
-using TodoList.Context;
 using TodoList.DTO;
-using TodoList.Models;
-using TodoList.Repository;
+using TodoList.Services;
 
 namespace TodoList.Controllers
 {
@@ -14,21 +10,18 @@ namespace TodoList.Controllers
     [Route("api/v1/[controller]")]
     public class TodoItemController : Controller
     {
-        ISearcher<TodoItem> _itemSearcher;
-        ISearcher<TodoFolder> _folderSearcher;
+        private readonly ITodoItemsService _todoItemsService;
 
-        public TodoItemController(ISearcher<TodoItem> itemSearcher, ISearcher<TodoFolder> folderSearcher)
+        public TodoItemController(ITodoItemsService todoItemsService)
         {
-            _folderSearcher = folderSearcher;
-            _itemSearcher = itemSearcher;
-
+            _todoItemsService = todoItemsService;
         }
 
         [HttpGet("{idFolder}")]
         [Authorize]
         public async Task<ActionResult> ListAsync(int idFolder)
         {
-            var result = await _itemSearcher.ListBy(s => s.Folder.Id == idFolder);
+            var result = await _todoItemsService.List(idFolder);
             return Ok(result);
         }
 
@@ -38,12 +31,8 @@ namespace TodoList.Controllers
         {
             try
             {
-                TodoItem newItem = new TodoItem();
-                newItem.Description = itemDTO.Description;
-                newItem.Folder = await _folderSearcher.GetById(itemDTO.Folder.Id);
-                
-
-                return Ok(await _itemSearcher.Insert(newItem));
+                var result = await _todoItemsService.Create(itemDTO);
+                return Ok(result);
             } 
             catch
             {
@@ -57,15 +46,11 @@ namespace TodoList.Controllers
 
         public async Task<ActionResult> PatchAsync(int id, TodoItemDTO itemDTO)
         {
-            var entity = await _itemSearcher.GetById(id);
+
 
             try
             {
-                entity.Description = itemDTO.Description;
-                entity.Completed = itemDTO.Completed;
-
-                await _itemSearcher.Update(id, entity);
-
+                await _todoItemsService.Update(id, itemDTO);
                 return Ok();
             }
             catch (System.Exception)
@@ -83,7 +68,7 @@ namespace TodoList.Controllers
         {
             try
             {
-                await _itemSearcher.Remove(id);
+                await _todoItemsService.Remove(id);
                 return Ok(true);
             }
             catch (System.Exception)
