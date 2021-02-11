@@ -39,4 +39,8 @@ If when you run the app when running the program in linux or docker, you receive
  This is because Microsoft's "NuGet" Framework certificate has expired at the end of Januray 2021 and it has not been renewed yet. There are several workarounds on the internet (see: https://github.com/NuGet/Announcements/issues/49), but the only real solution is to wait for a renewed certificate from the NuGet team. Sorry.
 
 ### How does it work:
-I programmed this project using OOP. There are only 3 classes, User, Folder and Item 
+I programmed this project using OOP. There are only 3 classes, User, Folder and Item:
+<img align="center" src="https://user-images.githubusercontent.com/51339020/107588725-2b1cfb80-6be3-11eb-9fd3-85ddf99de6d7.png" />
+
+First you need to create a User, with username and password, then every Folder created will be related to the User, and every item created, related with the Folder. When you delete a folder, all the items in it will be deleted as well.
+You can edit item names, and mark them as completed, but you cant do either of those with the folders.
