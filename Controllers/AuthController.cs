@@ -10,6 +10,7 @@ using TodoList.DTO;
 using TodoList.Extras;
 using TodoList.Models;
 using TodoList.Repository;
+using TodoList.Services.IServices;
 
 namespace TodoList.Controllers
 {
@@ -17,11 +18,11 @@ namespace TodoList.Controllers
     [ApiController]
     public class AuthController : Controller
     {
-        private readonly ISearcher<User> _userSearcher;
+        private readonly IAuthService _authService;
 
-        public AuthController(ISearcher<User> userSearcher)
+        public AuthController(IAuthService authService)
         {
-            _userSearcher = userSearcher;
+            _authService = authService;
         }
 
         [Route("signin"), HttpPost]
@@ -32,38 +33,15 @@ namespace TodoList.Controllers
                 return BadRequest();
             }
 
-            userDTO.Username = userDTO.Username.ToLower();
-            userDTO.Password = Constants.EncryptPwd(userDTO.Password);
-
-            var result = await _userSearcher.GetBy(x => x.Username == userDTO.Username && x.Password == userDTO.Password);
-
-            if (result != null)
+            var result = await _authService.SignIn(userDTO);
+            if (result == null)
             {
-                var secretBytes = Encoding.UTF8.GetBytes(Constants.Secret);
-                var key = new SymmetricSecurityKey(secretBytes);
-
-                var algorithm = SecurityAlgorithms.HmacSha256;
-
-                var signingCredentials = new SigningCredentials(key, algorithm);
-
-                var token = new JwtSecurityToken(
-                    Constants.Issuer,
-                    Constants.Audiance,
-                    claims: new Claim[] { new Claim("userId", result.Id) },
-                    notBefore: DateTime.Now,
-                    
-                    expires: DateTime.Now.AddDays(1),
-                    signingCredentials
-                );
-
-
-                var tokenJson = new JwtSecurityTokenHandler().WriteToken(token);
-
-                return Ok(new { access_token = tokenJson, username = userDTO.Username });
+            
+                return Unauthorized();
             }
             else
             {
-                return Unauthorized();
+                return Ok(new { access_token = result, username = userDTO.Username });
             }
         }
         [Route("signup"), HttpPost]
@@ -74,23 +52,14 @@ namespace TodoList.Controllers
                 return BadRequest();
             }
 
-            userDTO.Username = userDTO.Username.ToLower();
-
-            var users = await _userSearcher.ListBy(null);
-
-            foreach (var item in users)
+            if (await _authService.SignUp(userDTO))
             {
-                if (item.Username == userDTO.Username)
-                {
-                    return BadRequest();
-                }
-            }
-
-            User entity = new User() { Password = Constants.EncryptPwd(userDTO.Password), Username = userDTO.Username };
-
-            await _userSearcher.Insert(entity);
-
             return Ok();
+
+            } else
+            {
+                return BadRequest();
+            }
         }
     }
 }

@@ -69,7 +69,7 @@ namespace TodoList
             services.AddScoped(typeof(ISearcher<>), typeof(Searcher<>));
             services.AddScoped<ITodoFolderService, TodoFolderService>();
             services.AddScoped<ITodoItemsService, TodoItemsService>();
-
+            services.AddScoped<IAuthService, AuthService>();
             services.AddDbContext<AppDbContext>(options => options.UseSqlServer(Configuration.GetConnectionString("DevConnection")));
 
             // In production, the Angular files will be served from this directory
