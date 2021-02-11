@@ -42,13 +42,16 @@ But, saddly, the only real solution is to wait until a new certificate from the 
 I programmed this project using OOP. There are only 3 classes, User, Folder and Item:
 <img align="center" src="https://user-images.githubusercontent.com/51339020/107588725-2b1cfb80-6be3-11eb-9fd3-85ddf99de6d7.png" />
 
-When you first enter, you will be greeted and ask to register.
-<img align="center" src="https://user-images.githubusercontent.com/51339020/107589228-4b998580-6be4-11eb-8f5c-8ad831f1e4a1.png" />
+When you first enter, you will be greeted and ask to either sign in or sign up.
+<img align="center" src="https://user-images.githubusercontent.com/51339020/107593706-b780eb80-6bee-11eb-85e6-efc90e52b962.png" />
 
-You need to create a User, with username and password,
-<img align="center" src="https://user-images.githubusercontent.com/51339020/107589230-4c321c00-6be4-11eb-8334-d65f4b8354f4.png" />
+if you were already log in and your token is still valid, the app will renember you,
+<img align="center" src="https://user-images.githubusercontent.com/51339020/107593749-daab9b00-6bee-11eb-804f-c4f082678c6b.png" />
 
-then you a redirected to your folders,
+To create a User, you only need username and password,
+<img align="center" src="https://user-images.githubusercontent.com/51339020/107593905-51489880-6bef-11eb-8535-2bda67c314ce.png" />
+
+after you succesfuly sign up, you will get redirected to your folders page,
 <img align="center" src="https://user-images.githubusercontent.com/51339020/107589220-463c3b00-6be4-11eb-9963-cdcc7bde14d8.png" />
 
 Every Folder created will be related to the User, and every item created, related with the Folder. When you delete a folder, all the items in it will be deleted as well.
