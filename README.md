@@ -1,4 +1,4 @@
-# Todo's Application
+# To-do's Application
 
 ## About:
 This is a simple "To do" notes app, with folder to group those, and, hopefully, user login.
