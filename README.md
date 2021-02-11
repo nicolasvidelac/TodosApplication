@@ -42,5 +42,20 @@ If when you run the app when running the program in linux or docker, you receive
 I programmed this project using OOP. There are only 3 classes, User, Folder and Item:
 <img align="center" src="https://user-images.githubusercontent.com/51339020/107588725-2b1cfb80-6be3-11eb-9fd3-85ddf99de6d7.png" />
 
-First you need to create a User, with username and password, then every Folder created will be related to the User, and every item created, related with the Folder. When you delete a folder, all the items in it will be deleted as well.
+When you first enter, you will be greeted and ask to register.
+<img align="center" src="https://user-images.githubusercontent.com/51339020/107589228-4b998580-6be4-11eb-8f5c-8ad831f1e4a1.png" />
+
+You need to create a User, with username and password,
+<img align="center" src="https://user-images.githubusercontent.com/51339020/107589230-4c321c00-6be4-11eb-8334-d65f4b8354f4.png" />
+
+then you a redirected to your folders,
+<img align="center" src="https://user-images.githubusercontent.com/51339020/107589220-463c3b00-6be4-11eb-9963-cdcc7bde14d8.png" />
+
+Every Folder created will be related to the User, and every item created, related with the Folder. When you delete a folder, all the items in it will be deleted as well.
+
+To see the items of a folder, you click on the folder, there you will see the folder's items
+<img align="center" src="https://user-images.githubusercontent.com/51339020/107589218-450b0e00-6be4-11eb-923e-5c1dbe8b971e.png" />
+
 You can edit item names, and mark them as completed, but you cant do either of those with the folders.
+<img align="center" src="https://user-images.githubusercontent.com/51339020/107589693-530d5e80-6be5-11eb-84f3-4de2beaa51c7.png" />
+<img align="center" src="https://user-images.githubusercontent.com/51339020/107589206-41778700-6be4-11eb-8249-4a217e6221a9.png" />
