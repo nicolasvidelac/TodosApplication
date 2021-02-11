@@ -49,7 +49,7 @@ if you were already log in and your token is still valid, the app will renember 
 <img align="center" src="https://user-images.githubusercontent.com/51339020/107593749-daab9b00-6bee-11eb-804f-c4f082678c6b.png" />
 
 To create a User, you only need username and password,
-<img align="center" src="https://user-images.githubusercontent.com/51339020/107589230-4c321c00-6be4-11eb-8334-d65f4b8354f4.png" />
+<img align="center" src="https://user-images.githubusercontent.com/51339020/107593905-51489880-6bef-11eb-8535-2bda67c314ce.png" />
 
 after you succesfuly sign up, you will get redirected to your folders page,
 <img align="center" src="https://user-images.githubusercontent.com/51339020/107589220-463c3b00-6be4-11eb-9963-cdcc7bde14d8.png" />
