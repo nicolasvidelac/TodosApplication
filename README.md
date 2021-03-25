@@ -38,7 +38,7 @@ If when you run the app when running the program in linux or docker, you receive
 This is because Microsoft's "NuGet" Framework certificate has expired at the end of Januray 2021 and it has not been renewed yet. There are several workarounds on the internet (see: https://github.com/NuGet/Announcements/issues/49).
 But, saddly, the only real solution is to wait until a new certificate from the NuGet team comes out. Sorry.
 
-### How does it work:
+## How does it work:
 I programmed this project using OOP. There are only 3 classes, User, Folder and Item:
 <img align="center" src="https://user-images.githubusercontent.com/51339020/107588725-2b1cfb80-6be3-11eb-9fd3-85ddf99de6d7.png" />
 
